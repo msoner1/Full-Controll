@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/pc_values" android:icon="@drawable/pc_values"
+            android:title="Pc Değerleri" />
+        <item android:id="@+id/cam_shot" android:icon="@android:drawable/ic_menu_camera"
+            android:title="Kamera Görüntüsü Al" />
+        <item android:id="@+id/ss" android:icon="@android:drawable/ic_menu_gallery"
+            android:title="Secreen Shot Al" />
+        <item android:id="@+id/nav_slideshow" android:icon="@android:drawable/ic_menu_slideshow"
+            android:title="Slideshow" />
+        <item android:id="@+id/nav_manage" android:icon="@android:drawable/ic_menu_manage"
+            android:title="Tools" />
+    </group>
+
+    <item android:title="Ayarlar">
+        <menu>
+            <item android:id="@+id/settings" android:icon="@android:drawable/ic_menu_manage"
+                android:title="Genel Ayarlar" />
+            <item android:id="@+id/select_system" android:icon="@android:drawable/ic_menu_manage"
+                android:title="Sistem Seç" />
+        </menu>
+    </item>
+
+</menu>

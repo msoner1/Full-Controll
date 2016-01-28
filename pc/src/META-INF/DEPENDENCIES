@@ -1,0 +1,23 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+HttpMime
+
+
+From: 'Apache Software Foundation' (http://www.apache.org/)
+  - HttpCore (http://hc.apache.org/httpcomponents-core/) org.apache.httpcomponents:httpcore:jar:4.0.1
+    License: Apache License  (http://www.apache.org/licenses/LICENSE-2.0.html)
+
+From: 'The Apache Software Foundation' (http://www.apache.org)
+  - Apache JAMES Mime4j (http://james.apache.org/mime4j) org.apache.james:apache-mime4j:jar:0.6
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.html)
+
+From: 'The Apache Software Foundation' (http://www.apache.org/)
+  - Commons Logging (http://commons.apache.org/logging) commons-logging:commons-logging:jar:1.1.1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+
+
+

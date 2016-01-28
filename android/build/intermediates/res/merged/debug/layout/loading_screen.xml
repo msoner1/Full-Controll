@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ProgressBar android:id="@+id/mainSpinner1" android:layout_gravity="center"
+        android:layout_width="100dp" android:layout_height="100dp"
+        android:layout_margin="100dp"
+        android:indeterminate="true"
+        style="?android:attr/progressBarStyleInverse">
+    </ProgressBar>
+
+</LinearLayout><!-- From: file:/home/soner/Desktop/yedek/AndroidStudioProjects/FullControl/app/src/main/res/layout/loading_screen.xml -->

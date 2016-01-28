@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Full Control</string>
+
+    <string name="submit">Submit</string>
+    <string name="username">Username</string>
+    <string name="yardim"><u>Do You Need Help?</u></string>
+
+    <string name="no_internet">No Connection</string>
+    <string name="close_app">Close App</string>
+
+    <string name="system_info">System Information</string>
+
+    <string name="yardim_soru1"><b>Why I need to enter a user name and e-mail address?</b></string>
+    <string name="yardim_cevap1">We need to know you for access the server.</string>
+    <string name="yardim_soru2"><b>How it works Applications?</b></string>
+    <string name="yardim_cevap2">Through special software with Full Control on your PC and on your android device works by communicating through your internet connection.</string>
+    <string name="yardim_soru3"><b>How can I download the Full Control computer applications?</b></string>
+    <string name="yardim_cevap3">İf you create an account with your email, we will forward you the instructions.</string>
+
+    <string name="bilgi_1"> -Information is updated every 60 seconds.</string>
+    <string name="bilgi_2"> -This informations are sent by your computer.</string>
+    <string name="bilgi_3"> -Temp value is estimated.</string>
+    <string name="info"> -Image is updated every 10 seconds</string>
+    <string name="info2"> -You can zoom in picture by clicking on Display.</string>
+
+    <string name="system">Active System :</string>
+
+    <string name="fab_click">Refreshing.Please Wait.</string>
+    <string name="shutting_down">Shutting Down.Please Wait.</string>
+    <string name="already_closed">System already closed.</string>
+
+    <string name="download_image">Download Image</string>
+
+    <string name="pc_values">Pc Values</string>
+    <string name="take_cam">Take CamShot</string>
+    <string name="cam">CamShot</string>
+    <string name="take_ss">Take SecreenShot</string>
+    <string name="ss">SecreenShot</string>
+    <string name="select_system">Select System</string>
+    <string name="settings">Settings</string>
+    <string name="voice_send">Voice Send</string>
+    <string name="admin">Admin</string>
+    <string name="general_settings">General Settings</string>
+    <string name="contribute">Contribute</string>
+    <string name="cmd">Access CMD</string>
+
+
+    <string name="please_wait">Please wait.</string>
+    <string name="loading">Loadind...</string>
+
+</resources>

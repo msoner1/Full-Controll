@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/pc_values" android:icon="@drawable/pc_values"
+            android:title="@string/pc_values" />
+        <item android:id="@+id/cam_shot" android:icon="@drawable/sec_cam"
+            android:title="@string/take_cam" />
+        <item android:id="@+id/ss" android:icon="@drawable/screen"
+            android:title="@string/take_ss" />
+        <item android:id="@+id/voice_send" android:icon="@drawable/mic"
+            android:title="@string/voice_send" />
+        <item android:id="@+id/admin" android:icon="@drawable/admin"
+            android:title="@string/admin" />
+        <item android:id="@+id/cmd" android:icon="@drawable/cmd"
+            android:title="@string/cmd" />
+    </group>
+
+    <item android:title="@string/settings">
+        <menu>
+            <item android:id="@+id/settings" android:icon="@drawable/setting"
+                android:title="@string/general_settings" />
+            <item android:id="@+id/contribute" android:icon="@drawable/github"
+                android:title="@string/contribute" />
+        </menu>
+    </item>
+
+</menu><!-- From: file:/home/soner/Desktop/yedek/AndroidStudioProjects/FullControl/app/src/main/res/menu/activity_main_drawer.xml -->

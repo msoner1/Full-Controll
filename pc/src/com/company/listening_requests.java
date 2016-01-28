@@ -57,7 +57,9 @@ public class listening_requests {
 
         int request = Integer.parseInt(server_requests.http_get_request(pc_request_php_file_name, have_usage_values_request));
         if(request == 1){
-             process.usage_values();
+            if(System.getProperty("os.name").startsWith("Windows")){ //Only windows
+                process.usage_values();
+            }
             server_requests.http_get_request(pc_request_php_file_name, "usage_values_request=0");
         }
     }

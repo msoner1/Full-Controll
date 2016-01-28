@@ -29,11 +29,10 @@ import java.util.Random;
  * Server isteklerini yapma için oluşturulmuştur.
  */
 public class server_requests {
-    private static String server_url="http://yourserver.com";//Type your server url
+    private static String server_url="your_server_url";
     private static String client_token;
     private static String connect_id;
     private static int status = 1;
-    private static HttpClient httpclient = getThreadSafeClient();
 
     public server_requests() throws MalformedURLException, InterruptedException { //kurucu fonksiyon bu class yaratıldığnda bir bağlantı tokeni yaratır ve bunu daha sonraki isteklerde güvenlik amacıyla kullanımak için saklar
         reading_class read_xml = new reading_class();
@@ -46,8 +45,9 @@ public class server_requests {
         for (int i= 0;i<11;i++){
             clnt +=random_chars.charAt(r.nextInt(random_chars.length()));
         }
+        HttpClient httpclient = getThreadSafeClient();
         client_token= clnt;
-        URL url_token_sign_up = new URL(server_url+"/token_sign_up.php?client_token="+client_token+"&connect_id="+connect_id+"&computer_id="+computer_id);
+        URL url_token_sign_up = new URL(server_url+"token_sign_up.php?client_token="+client_token+"&connect_id="+connect_id+"&computer_id="+computer_id);
         try {
             HttpResponse response = httpclient.execute(new HttpGet(String.valueOf(url_token_sign_up)));
             HttpEntity entity = response.getEntity();
@@ -63,6 +63,7 @@ public class server_requests {
             Thread.sleep(5000);
             new server_requests();
         }
+        httpclient.getConnectionManager().shutdown();
     }
 
     private static DefaultHttpClient getThreadSafeClient()  {
@@ -76,7 +77,8 @@ public class server_requests {
         return client;
     }
     public int server_versiyon() throws MalformedURLException, InterruptedException {
-        URL url_server_control = new URL(server_url+"/versiyon.php");//Serverdaki surum bilgisine ulaşıcaz.
+        HttpClient httpclient = getThreadSafeClient();
+        URL url_server_control = new URL(server_url+"versiyon.php");//Serverdaki surum bilgisine ulaşıcaz.
         int server_versiyon=0;
         try {
             HttpResponse response = httpclient.execute(new HttpGet(String.valueOf(url_server_control)));
@@ -88,13 +90,14 @@ public class server_requests {
             Thread.sleep(5000);
             server_versiyon();
         }
+        httpclient.getConnectionManager().shutdown();
         return server_versiyon;
     }
 
     public static String http_get_request(String php_file_name, String request) throws MalformedURLException, InterruptedException { //herhangi bir http get isteğini yapar.
         reading_class read_xml = new reading_class();
-
-        URL url = new URL(server_url+"/full_control/web_service/" + php_file_name + "?" + request + "&client_token=" + client_token + "&computer_id=" + read_xml.get_computer_id());
+        HttpClient httpclient = getThreadSafeClient();
+        URL url = new URL(server_url + php_file_name + "?" + request + "&client_token=" + client_token + "&computer_id=" + read_xml.get_computer_id());
         String answer = null;
         try {
             HttpResponse response = httpclient.execute(new HttpGet(String.valueOf(url)));
@@ -110,12 +113,14 @@ public class server_requests {
             Thread.sleep(5000);
             http_get_request(php_file_name, request);
         }
+        httpclient.getConnectionManager().shutdown();
         return answer;
     }
     public static void upload_file_to_server(String file_dir,String file_type,String file_extension) throws IOException, HttpException, URISyntaxException {
+        HttpClient httpclient = getThreadSafeClient();
         reading_class read_xml = new reading_class();
         httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
-        HttpPost httppost = new HttpPost(server_url+"/upload.php?file_name="+read_xml.get_connect_id()+file_extension+"&client_token="+client_token+"&computer_id="+read_xml.get_computer_id());
+        HttpPost httppost = new HttpPost(server_url+"upload.php?file_name="+read_xml.get_connect_id()+file_extension+"&client_token="+client_token+"&computer_id="+read_xml.get_computer_id());
         File file = new File(file_dir);
         MultipartEntity mpEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
         ContentBody cbFile = new FileBody(file, file_type);
@@ -123,6 +128,7 @@ public class server_requests {
         httppost.setEntity(mpEntity);
         HttpResponse response = null;
         response = httpclient.execute(httppost);
+        httpclient.getConnectionManager().shutdown();
 
     }
 

@@ -28,9 +28,11 @@ public class Main {
         while (true) {
             outgoing_requests.pc_is_open();
             listen.listen_all();
-            if(usage_values_timer==50)
+            if(usage_values_timer==40)
             {
-                pc_process.usage_values();
+                if(System.getProperty("os.name").startsWith("Windows")){ //Only windows
+                    pc_process.usage_values();
+                }
                 usage_values_timer=0;
             }
             Thread.sleep(1000);

@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Random;
+
 import com.github.sarxos.webcam.Webcam;
 
 /**
@@ -15,6 +18,7 @@ import com.github.sarxos.webcam.Webcam;
 public class pc_process extends math{
     private String file_dir = "C:\\users\\"+System.getProperty("user.name")+"\\full_control\\";
     private reading_class read_xml = new reading_class();
+    ArrayList<Integer> cpu_values = new ArrayList<Integer>();
 
     public void pc_shutdown() throws IOException {
         Process p = Runtime.getRuntime().exec("shutdown /f /t 0 /s");
@@ -44,13 +48,13 @@ public class pc_process extends math{
     }
     public void usage_values(){
         String cpu_value;
-        String ram_value;   //
-        String disk_value="%2";
-        String temp_value="40";
+        String ram_value;
+        String temp_value;
 
         try{
 
             ////////////////////////////////////////////////////////////////////////////////////////////
+
 
             Process p = Runtime.getRuntime().exec("wmic cpu get loadpercentage");
             BufferedReader cpu_reader = new BufferedReader
@@ -96,16 +100,30 @@ public class pc_process extends math{
             total_ram_reader.close();
 
             /////////////////////////////////////////////////////////////////////////////////////////////
+            Random r = new Random();
+            cpu_values.add(Integer.parseInt(cpu_value));
 
-            p = Runtime.getRuntime().exec("wmic OS get FreePhysicalMemory /Value");
+            if(cpu_values.size()>5){
+                int avg = 0;
+                for(int i = 1; i < 6; i++){
+                    avg += cpu_values.get(cpu_values.size()-i);
+                }
+                avg /= 5;
+                if(avg<48){
+                    avg = 45 + r.nextInt(15);
+                }
+                temp_value=Integer.toString(avg);
 
+            }
+            else {
+                temp_value = Integer.toString(30 + r.nextInt(8)+r.nextInt(8));
+            }
 
             /////////////////////////////////////////////////////////////////////////////////////////////
 
             String usage_values_content = "<usage_values>\n" +
-                    " \t<cpu>%"+cpu_value+"</cpu>\n" +
+                    "\t<cpu>%"+cpu_value+"</cpu>\n" +
                     "\t<ram>%"+ram_value+"</ram>\n" +
-                    "\t<disk>"+disk_value+"</disk>\n" +
                     "\t<temp>"+temp_value+"</temp>\n" +
                     "</usage_values>";
 

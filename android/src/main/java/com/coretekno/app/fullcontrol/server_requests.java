@@ -30,7 +30,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class server_requests {
 
-    public static String web_url = "your_server_url";
+    public static String web_url = "your_url for localhost : 127.0.0.1";
     private static String client_token;
     private static String connect_id;
     private static String active_pc_id;
@@ -60,12 +60,20 @@ public class server_requests {
                 mgr.getSchemeRegistry()), params);
         return client;
     }
-
-    public static String get_active_pc_name() throws InterruptedException, URISyntaxException, HttpException, IOException {
+    public static String get_client_token() {
+        return client_token;
+    }
+    public static String get_active_pc_name(){
         return active_pc_name;
     }
-    public static String get_active_pc_id() throws InterruptedException, URISyntaxException, HttpException, IOException {
+    public static String get_active_pc_id(){
         return active_pc_id;
+    }
+    public static void set_active_pc_name(String new_name){
+        active_pc_name = new_name;
+    }
+    public static void set_active_pc_id(String new_id){
+        active_pc_id = new_id;
     }
     public static String http_get_request(String request_url,String requests){
         URL new_request_url = null;
@@ -95,24 +103,32 @@ public class server_requests {
         return http_get_request("user_files/"+connect_id+".xml",null);
     }
 
+    public static String http_post_request(String request_url,String[] requests,String[] requests_key) throws IOException, URISyntaxException, HttpException {
+        URL url =new URL(web_url+request_url);
+        String respond;
+
+        HttpResponse response;
+        HttpClient myClient = new DefaultHttpClient();
+        HttpPost myConnection;
+        myConnection = new HttpPost(String.valueOf(url));
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(requests.length);
+        for (int i = 0;i<requests.length;i++) {
+            nameValuePair.add(new BasicNameValuePair(requests[i], requests_key[i]));
+        }
+
+        myConnection.setEntity(new UrlEncodedFormEntity(nameValuePair, "utf-8"));
+        response = myClient.execute(myConnection);
+        respond = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+        return respond;
+    }
+
     public static String[] sign_up(String user_name,String email,String phone_brand) throws IOException, InterruptedException, SAXException, ParserConfigurationException, URISyntaxException, HttpException {
-        URL url =new URL(web_url+"sign_up.php");
-        String answer;
-            //verileri http post isteğiyle gönderiyoruz...
-            HttpResponse response;
-            HttpClient myClient = new DefaultHttpClient();
-            HttpPost myConnection;
-            myConnection = new HttpPost(String.valueOf(url));
-            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);
-            nameValuePair.add(new BasicNameValuePair("user_name", user_name));
-            nameValuePair.add(new BasicNameValuePair("email", email));
-            nameValuePair.add(new BasicNameValuePair("phone_brand", phone_brand));
-            myConnection.setEntity(new UrlEncodedFormEntity(nameValuePair, "utf-8"));
-            response = myClient.execute(myConnection);
-            answer = EntityUtils.toString(response.getEntity(), "UTF-8");
 
+        String[] requests = new String[]{"user_name","email","phone_brand"};
+        String[] requests_key = new String[]{user_name,email,phone_brand};
 
-        String[] responds = read_xml.read_sign_up(answer);
+        String[] responds = read_xml.read_sign_up(http_post_request("sign_up.php",requests,requests_key));
         return responds;
     }
 

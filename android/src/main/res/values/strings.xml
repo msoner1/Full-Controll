@@ -29,6 +29,7 @@
 
     <string name="fab_click">Refreshing.Please Wait.</string>
     <string name="shutting_down">Shutting Down.Please Wait.</string>
+    <string name="sleeping">Sleeping.Please Wait.</string>
     <string name="already_closed">System already closed.</string>
 
     <string name="download_image">Download Image</string>
@@ -44,10 +45,39 @@
     <string name="admin">Admin</string>
     <string name="general_settings">General Settings</string>
     <string name="contribute">Contribute</string>
+    <string name="contribute_text">You can contribute to our completely free and open source applications.</string>
     <string name="cmd">Access CMD</string>
+    <string name="dilek">Wishes / suggestions</string>
 
 
     <string name="please_wait">Please wait.</string>
-    <string name="loading">Loadind...</string>
+    <string name="loading">Loading...</string>
 
+    <string name="system_settings">System Settings</string>
+    <string name="notification_settings">Notification Settings</string>
+    <string name="about_us">About Us</string>
+    <string name="change">Change</string>
+    <string name="delete">Delete System</string>
+    <string name="rest"> Rest</string>
+
+    <string name="username_changed">Successfully Changed.</string>
+
+    <string name="off">OFF</string>
+    <string name="sleep">SLEEP</string>
+    <string name="mouse_lock">Mouse Lock</string>
+    <string name="horn">Horn</string>
+    <string name="lock">Lock</string>
+    <string name="pc_soft_delete">DELETE PC SOFTWARE</string>
+    <string name="delete_message_desc"> Do you want to delete the PC software?</string>
+    <string name="send_message">Send Message</string>
+    <string name="locking">Locking.Please Wait</string>
+    <string name="spy_mode_desc">Spy Mode allows to work PC software in completely hidden</string>
+
+    <string name="empty_message">Please fill the area.</string>
+    <string name="waiting_respond">Waiting respond.Please Wait.</string>
+
+    <string name="for_recording">For start the record click mic.</string>
+    <string name="recording">Recording...</string>
+
+    <string name="cmd_desc">Reminder!\nThe system does not start a session.It is only request-response client.</string>
 </resources>

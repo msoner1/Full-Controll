@@ -20,7 +20,7 @@ public class Image_web_view extends AppCompatActivity {
         WebView image_web = (WebView) findViewById(R.id.webView_image);
         ImageView back = (ImageView) findViewById(R.id.back_button);
         intent = getIntent();
-
+        image_web.clearCache(true);
         image_web.loadUrl(intent.getStringExtra("url"));
         image_web.getSettings().setLoadWithOverviewMode(true);
         image_web.getSettings().setBuiltInZoomControls(true);

@@ -34,7 +34,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 public class read_xml extends AppCompatActivity{
-    private File fxmlFile;
+    private static File fxmlFile;
     private static String name;
     private String phone_brand;
     private static String connect_id;
@@ -69,14 +69,17 @@ public class read_xml extends AppCompatActivity{
 
 
     }
-    private File get_xml_file_name(){
-        return this.fxmlFile;
+    private static File get_xml_file_name(){
+        return fxmlFile;
     }
     public static String get_connect_id(){
         return connect_id;
     }
     public static String get_user_name(){
         return name;
+    }
+    public static void set_username(String incomming){
+        name = incomming;
     }
 
     private String[] config_xml_oku(){
@@ -108,7 +111,7 @@ public class read_xml extends AppCompatActivity{
 
         return new String[]{name1,phone_brand1,connect_id1};
     }
-    public void update_xml_value(String value,String new_value) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    public static void update_xml_value(String value,String new_value) throws ParserConfigurationException, IOException, SAXException, TransformerException {
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();

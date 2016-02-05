@@ -45,6 +45,7 @@
                     android:inputType="textPersonName"
                     android:hint="@string/username"
                     android:ems="10"
+                    android:maxLength="10"
                     android:id="@+id/e_user_name"
                     android:layout_gravity="center_horizontal"
                      />
@@ -54,6 +55,7 @@
                     android:inputType="textPersonName"
                     android:hint="Email"
                     android:ems="10"
+                    android:maxLength="40"
                     android:id="@+id/e_mail"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp" />

@@ -28,7 +28,8 @@
 
     <string name="fab_click">Yenileniyor.Lütfen Bekleyin.</string>
     <string name="shutting_down">Kapatılıyor.Lütfen Bekleyin.</string>
-    <string name="already_closed">Sistem zaten kapalı durumda.</string>
+    <string name="sleeping">Uyutuluyor.Lütfen Bekleyin.</string>
+    <string name="already_closed">Sistem kapalı durumda.</string>
 
     <string name="download_image">Görüntüyü Indir</string>
 
@@ -43,9 +44,40 @@
     <string name="admin">Admin</string>
     <string name="general_settings">Genel Ayarlar</string>
     <string name="contribute">Katkıda Bulunun</string>
+    <string name="contribute_text">Tamamen özgür ve açık kaynak kodlu uygulamamıza sizde katkıda bulunabilirsiniz.</string>
     <string name="cmd">CMD Erişimi</string>
+    <string name="dilek">Dilek/öneri</string>
 
     <string name="please_wait">Lütfen Bekleyin</string>
     <string name="loading">İçerik Yükleniyor.</string>
+
+
+    <string name="system_settings">Sistem Ayarları</string>
+    <string name="notification_settings">Bildirim Ayarları</string>
+    <string name="about_us">Hakkımızda</string>
+    <string name="change">Değiştir</string>
+    <string name="delete">Sistemi Sil</string>
+    <string name="rest"> Dinleniyor</string>
+
+    <string name="username_changed">Kullanıcı Adınız Değiştirildi.</string>
+
+    <string name="off">KAPAT</string>
+    <string name="sleep">UYKU</string>
+    <string name="mouse_lock">Mouse Kilidi</string>
+    <string name="horn">Uyarı Sesi</string>
+    <string name="lock">Kilitle</string>
+    <string name="pc_soft_delete">PC YAZILIMINI SİL</string>
+    <string name="send_message">Mesaj Gönder</string>
+    <string name="locking">Kilitleniyor.Lütfen Bekleyin</string>
+    <string name="spy_mode_desc">Spy Mode pc yazılımının tamamen gizli modda çalışmasını sağlar.</string>
+    <string name="delete_message_desc">PC yazılımını silmek istiyor musunuz?</string>
+
+    <string name="empty_message">Lütfen Alanı Doldurun.</string>
+    <string name="waiting_respond">Cevap Bekleniyor.Lütfen Bekleyin</string>
+
+    <string name="for_recording">Kayıda Başlamak İçin Mikrofona Basın.</string>
+    <string name="recording">Kayıt Ediliyor...</string>
+
+    <string name="cmd_desc">Hatırlatma!\nGöndereceğiniz komutlar anlık işlenip çıktı alınır.Yani sistemde bir oturum başlatılmaz.Bu sebeple ard arda göndereceğiniz komutlar ayrı ayrı işlenir.</string>
 
 </resources>

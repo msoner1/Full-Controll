@@ -128,14 +128,31 @@ public class MainActivity extends AppCompatActivity
             finish();
 
         } else if (id == R.id.voice_send) {
+            Intent intent = new Intent(this,voice_send.class);
+            startActivity(intent);
+            finish();
 
         } else if (id == R.id.admin) {
+            Intent intent = new Intent(this,admin.class);
+            startActivity(intent);
+            finish();
 
         } else if (id == R.id.cmd) {
+            Intent intent = new Intent(this,cmd.class);
+            startActivity(intent);
+            finish();
 
         } else if (id == R.id.settings) {
+            Intent intent = new Intent(this,Settings_and_contribute.class);
+            intent.putExtra("which_action","settings");
+            startActivity(intent);
+            finish();
 
         } else if (id == R.id.contribute) {
+            Intent intent = new Intent(this,Settings_and_contribute.class);
+            intent.putExtra("which_action","contribute");
+            startActivity(intent);
+            finish();
 
         }
 
@@ -184,12 +201,6 @@ public class MainActivity extends AppCompatActivity
                 response = server_requests.http_get_request("phone_requests.php", "get_pc_status=1&computer_id=" + server_requests.get_active_pc_id());
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            } catch (HttpException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
             if (response.equals("1")) {
                 return server_requests.get_pc_values();
@@ -201,17 +212,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         protected void onPostExecute(String response) {
-            try {
+
                 pc_name.setText(server_requests.get_active_pc_name());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            } catch (HttpException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
 
             if (response.equals("0")) {
                 pc_status.setText("OFF");
@@ -247,18 +250,8 @@ public class MainActivity extends AppCompatActivity
             }
             @Override
             protected String doInBackground(String[] params) {
-                    String response = null;
-                    try {
-                        response = server_requests.http_get_request("phone_requests.php", params[0]+"&computer_id=" + server_requests.get_active_pc_id());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
-                    } catch (HttpException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                String response = server_requests.http_get_request("phone_requests.php", params[0]+"&computer_id=" + server_requests.get_active_pc_id());
+
                 return response;
             }
             protected void onPostExecute(String response) {

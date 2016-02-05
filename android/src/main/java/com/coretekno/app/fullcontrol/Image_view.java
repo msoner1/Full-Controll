@@ -86,17 +86,8 @@ public class Image_view extends AppCompatActivity implements NavigationView.OnNa
             callAsynchronousTask("cam_shot_request=1");
         }
         setSupportActionBar(toolbar);
-        try {
-            pc_name.setText(server_requests.get_active_pc_name());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (HttpException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        pc_name.setText(server_requests.get_active_pc_name());
 
         user_name.setText(read_xml.get_user_name());
         user_connect_id.setText("Connect_id : "+read_xml.get_connect_id());
@@ -196,14 +187,31 @@ public class Image_view extends AppCompatActivity implements NavigationView.OnNa
             finish();
 
         }  else if (id == R.id.voice_send) {
+            Intent intent = new Intent(this,voice_send.class);
+            startActivity(intent);
+            finish();
 
         } else if (id == R.id.admin) {
+            Intent intent = new Intent(this,admin.class);
+            startActivity(intent);
+            finish();
 
         } else if (id == R.id.cmd) {
+            Intent intent = new Intent(this,cmd.class);
+            startActivity(intent);
+            finish();
 
         } else if (id == R.id.settings) {
+            Intent intent = new Intent(this,Settings_and_contribute.class);
+            intent.putExtra("which_action","settings");
+            startActivity(intent);
+            finish();
 
         } else if (id == R.id.contribute) {
+            Intent intent = new Intent(this,Settings_and_contribute.class);
+            intent.putExtra("which_action","contribute");
+            startActivity(intent);
+            finish();
 
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -237,21 +245,11 @@ public class Image_view extends AppCompatActivity implements NavigationView.OnNa
         @Override
         protected String doInBackground(String[] params) {
             String response = null;
-            try {
-                response = server_requests.http_get_request("phone_requests.php", "get_pc_status=1&computer_id=" + server_requests.get_active_pc_id());
-                if(response.equals("1")){
-                    server_requests.http_get_request("phone_requests.php", params[0]+"&computer_id=" + server_requests.get_active_pc_id());
-                    return "00";
-                }
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            } catch (HttpException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            response = server_requests.http_get_request("phone_requests.php", "get_pc_status=1&computer_id=" + server_requests.get_active_pc_id());
+            if(response.equals("1")){
+                server_requests.http_get_request("phone_requests.php", params[0]+"&computer_id=" + server_requests.get_active_pc_id());
+                return "00";
             }
             return "null";
         }

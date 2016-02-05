@@ -35,7 +35,6 @@ public class reading_class {
     private final String phone_brand;
     private final String computer_id;
     private final String connect_id;
-    private final String mode;
 
     public reading_class() throws NullPointerException{
         fxmlFile =new File("config.xml");
@@ -47,7 +46,6 @@ public class reading_class {
         phone_brand = values[5];
         computer_id = values[2];
         connect_id = values[6];
-        mode = values[7];
     }
     private File get_xml_file_name(){
         return this.fxmlFile;
@@ -69,9 +67,6 @@ public class reading_class {
     }
     public String get_phone_brand(){
         return this.phone_brand;
-    }
-    public String get_mode(){
-        return this.mode;
     }
     public String get_language(){
         return this.language;
@@ -102,7 +97,6 @@ public class reading_class {
         String language1=null;
         String phone_brand1=null;
         String connect_id1=null;
-        String mode1=null;
 
         try {
 
@@ -121,14 +115,13 @@ public class reading_class {
             language1 = eElement.getElementsByTagName("language").item(0).getTextContent();
             phone_brand1 = eElement.getElementsByTagName("phone_brand").item(0).getTextContent();
             connect_id1 = eElement.getElementsByTagName("connect_id").item(0).getTextContent();
-            mode1 = eElement.getElementsByTagName("mode").item(0).getTextContent();
 
         } catch (Exception e) {
             exception_messages.show_message("Error","Not Found Config.xml file.Please Re-install this application.");
             System.exit(0);
         }
 
-        return new String[]{versiyon1,language1,computer_id1,name1,pc_name1,phone_brand1,connect_id1,mode1};
+        return new String[]{versiyon1,language1,computer_id1,name1,pc_name1,phone_brand1,connect_id1};
     }
     public void update_xml_value(String value,String new_value) throws ParserConfigurationException, IOException, SAXException, TransformerException {
 

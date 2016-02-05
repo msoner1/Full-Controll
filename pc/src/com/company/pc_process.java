@@ -23,6 +23,19 @@ public class pc_process extends math{
     public void pc_shutdown() throws IOException {
         Process p = Runtime.getRuntime().exec("shutdown /f /t 0 /s");
     }
+    public String cmd(String command) throws IOException {
+        String command_respond = "";
+        String while_loop;
+
+        Process p = Runtime.getRuntime().exec(command);
+        BufferedReader command_reader = new BufferedReader
+                (new InputStreamReader(p.getInputStream()));
+        while ((while_loop=command_reader.readLine()) != null) {
+            command_respond += while_loop;
+        }
+        command_reader.close();
+        return command_respond;
+    }
 
     public void take_ss() throws AWTException, IOException, HttpException, URISyntaxException {
 
@@ -141,5 +154,24 @@ public class pc_process extends math{
         }
 
     }
+    public void message(String message){
+        exception_messages.show_message(Set_strings.get_value("new_message"),message);
+    }
+    public void horn(int status){
+        if(status == 1) {
+            if(!JukeBox.isPlaying("horn")){
+                JukeBox.loop("horn");
+            }
+        }
+        else {
+            JukeBox.stop("horn");
+        }
+    }
+    public void pc_lock() throws IOException {
+        Process p = Runtime.getRuntime().exec("rundll32.exe user32.dll, LockWorkStation");
+    }
+    public void pc_sleep() throws IOException {
+        Process p = Runtime.getRuntime().exec("psshutdown -d -t 0");
 
+    }
 }

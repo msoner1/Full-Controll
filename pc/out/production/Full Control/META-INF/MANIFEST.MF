@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: apache-mime4j.jar slf4j-api-1.7.2.jar httpmime.jar webcam-capture-0.3.10.jar httpclient-4.0.2.jar bridj-0.6.2.jar java-json.jar vlcj-3.8.0.jar org-apache-commons-logging.jar http-core-4.1.jar platform-3.5.2.jar jna-3.5.2.jar zip4j-1.3.1.jar
+Main-Class: com.company.Main
+

@@ -1,9 +1,11 @@
 package com.company;
 
 
-import javax.sound.sampled.*;
-import java.util.HashMap;
+import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
+import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 
+import java.util.HashMap;
+import javax.sound.sampled.*;
 /**
  * @author : ForeignGuyMike
  * @version : 1.0.0
@@ -29,8 +31,8 @@ public class JukeBox {
         Clip clip;
         try {
             System.out.print(JukeBox.class.getClass().getResource(s));
-            AudioInputStream ais =
-                    AudioSystem.getAudioInputStream(JukeBox.class.getClass().getResource(s));
+            AudioInputStream ais = null;
+            ais = AudioSystem.getAudioInputStream(JukeBox.class.getClass().getResource(s));
             AudioFormat baseFormat = ais.getFormat();
             AudioFormat decodeFormat = new AudioFormat(
                     AudioFormat.Encoding.PCM_SIGNED,
@@ -61,7 +63,19 @@ public class JukeBox {
         c.setFramePosition(i);
         c.start();
     }
+    public static void play_record(String filedir){
+        System.setProperty("jna.library.path","C:\\users\\"+System.getProperty("user.name")+"\\full_control\\VLC\\");
+        new NativeDiscovery().discover();
+        try {
+            AudioMediaPlayerComponent mediaPlayerComponent = new AudioMediaPlayerComponent();
+            mediaPlayerComponent.getMediaPlayer().playMedia(filedir);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
+
+    }
     public static void stop(String s) {
         if(clips.get(s) == null) return;
         if(clips.get(s).isRunning()){

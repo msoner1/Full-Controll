@@ -5,10 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,21 +14,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.apache.http.HttpException;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
+import com.ironsource.mobilcore.MobileCore;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -73,6 +65,8 @@ public class admin extends AppCompatActivity implements NavigationView.OnNavigat
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        MobileCore.showInterstitial(this, MobileCore.AD_UNIT_TRIGGER.APP_START, null);
     }
 
     @OnClick(R.id.off_click)public void off_click(View view){
@@ -163,6 +157,7 @@ public class admin extends AppCompatActivity implements NavigationView.OnNavigat
                             request.execute("message_request",input.getText().toString(),"message_click");
 
                         }
+                        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

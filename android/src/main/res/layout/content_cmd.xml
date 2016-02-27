@@ -31,39 +31,41 @@
                 android:id="@+id/cmd_listview"
                 android:drawSelectorOnTop="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="550dp"
+                android:layout_weight="1"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".0"
+                android:layout_margin="5dp"
+                android:id="@+id/cmd_write_layout"
+                android:layout_gravity="bottom">
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:maxLength="150"
+                    android:ems="8"
+                    android:padding="5dp"
+                    android:layout_weight=".9"
+                    android:hint="Type here..."
+                    android:textColor="@color/colorPrimaryDark"
+                    android:id="@+id/cmd_edittext"
+                    android:background="@android:color/white"
+                    />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:layout_weight=".1"
+                    android:text="OK"
+                    android:id="@+id/button_send_cmd"
+                    android:background="@color/colorPrimary"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    />
+            </LinearLayout>
 
         </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:id="@+id/cmd_write_layout"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:maxLength="150"
-            android:ems="8"
-            android:padding="5dp"
-            android:layout_weight=".9"
-            android:hint="Type here..."
-            android:textColor="@color/colorPrimaryDark"
-            android:id="@+id/cmd_edittext"
-            android:background="@android:color/white"
-             />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_weight=".1"
-            android:text="OK"
-            android:id="@+id/button_send_cmd"
-            android:background="@color/colorPrimary"
-            android:foreground="?android:attr/selectableItemBackground"
-            />
-    </LinearLayout>
+
 
 </RelativeLayout>
 

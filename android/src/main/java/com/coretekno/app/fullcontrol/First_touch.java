@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.ironsource.mobilcore.AdUnitEventListener;
+import com.ironsource.mobilcore.MobileCore;
+
 /**
  * Ana aktiviti dosyamızdır uygulama buradan baslar
  */
@@ -51,6 +54,19 @@ public class First_touch extends AppCompatActivity {
                 }
             });
         }
+
+        MobileCore.setAdUnitEventListener(new AdUnitEventListener() {
+            @Override
+            public void onAdUnitEvent(MobileCore.AD_UNITS adUnit, EVENT_TYPE eventType,
+                                      MobileCore.AD_UNIT_TRIGGER... trigger) {
+                // Handle events here
+            }
+        });
+
+        MobileCore.init(this, "M6B45N0KWBQBDRQ60SKHW9TLTOR3", MobileCore.LOG_TYPE.PRODUCTION, MobileCore.AD_UNITS.INTERSTITIAL);
+
+        MobileCore.loadAdUnit(MobileCore.AD_UNITS.INTERSTITIAL,
+                MobileCore.AD_UNIT_TRIGGER.APP_START);
     }
 
     public class do_background extends AsyncTask<Void,Integer,Integer>{

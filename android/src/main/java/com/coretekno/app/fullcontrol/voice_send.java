@@ -1,6 +1,10 @@
 package com.coretekno.app.fullcontrol;
 
 import android.content.Intent;
+import android.media.MediaRecorder;
+import android.os.AsyncTask;
+import android.os.CountDownTimer;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -14,8 +18,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.firezenk.audiowaves.Visualizer;
+
+import java.io.File;
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,9 +39,10 @@ public class voice_send extends AppCompatActivity implements NavigationView.OnNa
     @Bind(R.id.voice_record) FloatingActionButton fab_voice_send;
     @Bind(R.id.record_time_text) TextView record_time_text;
     @Bind(R.id.record_text) TextView record_text;
+    private MediaRecorder mRecorder = null;
 
     Boolean recording = false;
-    int record_time = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,18 +62,52 @@ public class voice_send extends AppCompatActivity implements NavigationView.OnNa
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-        ((Visualizer) findViewById(R.id.visual)).startListening();
     }
-    @OnClick(R.id.voice_record)public void voice_send_click(View v){
-        if(recording){
-            record_time_text.setText(Integer.toString(record_time++));
-            record_text.setText(R.string.for_recording);
+    CountDownTimer timer = new CountDownTimer(30000,1000) {
+
+        public void onTick(long millisUntilFinished) {
+            record_time_text.setText(Long.toString(millisUntilFinished / 1000));
+        }
+
+        public void onFinish() {
             recording=false;
+            mRecorder.stop();
+            cancel();
+            mRecorder.release();
+            mRecorder = null;
+            record_time_text.setText("30");
+            record_text.setText(R.string.for_recording);
             fab_voice_send.setImageResource(R.drawable.mic);
+            upload upload = new upload();
+            upload.execute();
+        }
+    };
+    @OnClick(R.id.voice_record)public void voice_send_click(View v){
+
+
+        if(recording){
+            timer.cancel();
+            timer.onFinish();
+
         }
         else {
+            timer.start();
+
+            mRecorder = new MediaRecorder();
+            mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mRecorder.setOutputFile(String.valueOf(Environment.getExternalStorageDirectory())+ File.separator+"fullcontrol"+File.separator+"record.3gp");
+            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);
+
+            try {
+                mRecorder.prepare();
+            } catch (IOException e) {
+
+            }
+
+            mRecorder.start();
+
             record_text.setText(R.string.recording);
-            record_time_text.setText(Integer.toString(record_time++));
             recording = true;
             fab_voice_send.setImageResource(R.drawable.mic_dis);
         }
@@ -128,5 +170,27 @@ public class voice_send extends AppCompatActivity implements NavigationView.OnNa
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected class upload extends AsyncTask{
+
+        protected void onPreExecute(){
+            Toast.makeText(getApplicationContext(), "Kayıt servera aktarılıyor.", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            try {
+                server_requests.upload_server();
+                server_requests.http_get_request("phone_requests.php", "record_request=1&computer_id=" + server_requests.get_active_pc_id());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(Object res){
+            Toast.makeText(getApplicationContext(), "Kayıt servera aktarıldı.", Toast.LENGTH_LONG).show();
+        }
     }
 }

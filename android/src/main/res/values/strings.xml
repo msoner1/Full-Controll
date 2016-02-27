@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="banner_ad_unit_id">ca-app-pub-1094890557548807/8025151779</string>
+
+
     <string name="app_name">Full Control</string>
 
     <string name="submit">Submit</string>
@@ -63,7 +66,7 @@
     <string name="username_changed">Successfully Changed.</string>
 
     <string name="off">OFF</string>
-    <string name="sleep">SLEEP</string>
+    <string name="sleep">REBOOT</string>
     <string name="mouse_lock">Mouse Lock</string>
     <string name="horn">Horn</string>
     <string name="lock">Lock</string>

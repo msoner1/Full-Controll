@@ -8,20 +8,20 @@ import butterknife.ButterKnife.ViewBinder;
 public class MainActivity$$ViewBinder<T extends com.coretekno.app.fullcontrol.MainActivity> implements ViewBinder<T> {
   @Override public void bind(final Finder finder, final T target, Object source) {
     View view;
-    view = finder.findOptionalView(source, 2131558565, null);
-    target.pc_name = finder.castView(view, 2131558565, "field 'pc_name'");
-    view = finder.findOptionalView(source, 2131558574, null);
-    target.pc_status = finder.castView(view, 2131558574, "field 'pc_status'");
-    view = finder.findOptionalView(source, 2131558578, null);
-    target.ram_value = finder.castView(view, 2131558578, "field 'ram_value'");
-    view = finder.findOptionalView(source, 2131558582, null);
-    target.cpu_value = finder.castView(view, 2131558582, "field 'cpu_value'");
-    view = finder.findOptionalView(source, 2131558585, null);
-    target.temp_value = finder.castView(view, 2131558585, "field 'temp_value'");
-    view = finder.findRequiredView(source, 2131558606, "field 'user_name'");
-    target.user_name = finder.castView(view, 2131558606, "field 'user_name'");
-    view = finder.findRequiredView(source, 2131558607, "field 'user_connect_id'");
-    target.user_connect_id = finder.castView(view, 2131558607, "field 'user_connect_id'");
+    view = finder.findOptionalView(source, 2131558568, null);
+    target.pc_name = finder.castView(view, 2131558568, "field 'pc_name'");
+    view = finder.findOptionalView(source, 2131558571, null);
+    target.pc_status = finder.castView(view, 2131558571, "field 'pc_status'");
+    view = finder.findOptionalView(source, 2131558605, null);
+    target.ram_value = finder.castView(view, 2131558605, "field 'ram_value'");
+    view = finder.findOptionalView(source, 2131558609, null);
+    target.cpu_value = finder.castView(view, 2131558609, "field 'cpu_value'");
+    view = finder.findOptionalView(source, 2131558612, null);
+    target.temp_value = finder.castView(view, 2131558612, "field 'temp_value'");
+    view = finder.findRequiredView(source, 2131558642, "field 'user_name'");
+    target.user_name = finder.castView(view, 2131558642, "field 'user_name'");
+    view = finder.findRequiredView(source, 2131558643, "field 'user_connect_id'");
+    target.user_connect_id = finder.castView(view, 2131558643, "field 'user_connect_id'");
     view = finder.findRequiredView(source, 2131558540, "field 'toolbar'");
     target.toolbar = finder.castView(view, 2131558540, "field 'toolbar'");
     view = finder.findRequiredView(source, 2131558539, "field 'drawer'");
@@ -38,7 +38,7 @@ public class MainActivity$$ViewBinder<T extends com.coretekno.app.fullcontrol.Ma
           target.fab_click(p0);
         }
       });
-    view = finder.findRequiredView(source, 2131558573, "method 'power_click'");
+    view = finder.findRequiredView(source, 2131558601, "method 'power_click'");
     view.setOnClickListener(
       new butterknife.internal.DebouncingOnClickListener() {
         @Override public void doClick(

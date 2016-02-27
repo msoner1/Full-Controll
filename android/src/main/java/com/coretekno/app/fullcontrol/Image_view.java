@@ -24,6 +24,9 @@ import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -60,6 +63,8 @@ public class Image_view extends AppCompatActivity implements NavigationView.OnNa
     private String img_url = null;
     private Bitmap mybitmap = null;
     Intent intent_incoming;
+
+    Timer timer = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +104,11 @@ public class Image_view extends AppCompatActivity implements NavigationView.OnNa
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
     }
     @OnClick(R.id.imageView_)public void image_click(View view){
         Intent intent = new Intent(this,Image_web_view.class);
@@ -146,7 +156,7 @@ public class Image_view extends AppCompatActivity implements NavigationView.OnNa
         Toast.makeText(getApplicationContext(),"Downloading...Please Wait",Toast.LENGTH_LONG).show();
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
-            File file = new File(String.valueOf(Environment.getExternalStorageDirectory())+File.separator+"fullControl");
+            File file = new File(String.valueOf(Environment.getExternalStorageDirectory())+File.separator+"fullcontrol");
             file.mkdir();
                 download download = new download();
                 download.execute(img_url);
@@ -173,44 +183,60 @@ public class Image_view extends AppCompatActivity implements NavigationView.OnNa
         if (id == R.id.pc_values) {
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
         } else if (id == R.id.ss) {
             Intent intent = new Intent(this,Image_view.class);
             intent.putExtra("which_action","ss");
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         } else if (id == R.id.cam_shot) {
             Intent intent = new Intent(this,Image_view.class);
             intent.putExtra("which_action","cam_shot");
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         }  else if (id == R.id.voice_send) {
             Intent intent = new Intent(this,voice_send.class);
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         } else if (id == R.id.admin) {
             Intent intent = new Intent(this,admin.class);
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         } else if (id == R.id.cmd) {
             Intent intent = new Intent(this,cmd.class);
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         } else if (id == R.id.settings) {
             Intent intent = new Intent(this,Settings_and_contribute.class);
             intent.putExtra("which_action","settings");
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         } else if (id == R.id.contribute) {
             Intent intent = new Intent(this,Settings_and_contribute.class);
             intent.putExtra("which_action","contribute");
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         }
@@ -219,7 +245,6 @@ public class Image_view extends AppCompatActivity implements NavigationView.OnNa
     }
     public void callAsynchronousTask(final String rq) {
         final Handler handler = new Handler();
-        Timer timer = new Timer();
         TimerTask doAsynchronousTask = new TimerTask() {
             @Override
             public void run() {

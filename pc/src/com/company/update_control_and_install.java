@@ -25,6 +25,7 @@ public class update_control_and_install{
             if(server.server_versiyon()>this_versiyon){ //update var
                 update_download();
             }
+        server_requests.http_get_request("pc_requests.php","pc_is_open=1");
         delete_old_versiyon();
 
     }
@@ -32,7 +33,7 @@ public class update_control_and_install{
         reading_class read_xml = new reading_class();
         Integer new_versiyon = Integer.parseInt(read_xml.get_versiyon())+1;
 
-        URL url =new URL("http://app.coretekno.com/full_control/web_service/full_control.zip");
+        URL url =new URL("http://46.101.231.241/full_control.zip");
         String file= "C:\\users\\"+System.getProperty("user.name")+"\\full_control\\full_control.zip";
         HttpURLConnection c = (HttpURLConnection) url.openConnection();
         c.getResponseCode();
@@ -49,7 +50,7 @@ public class update_control_and_install{
         File filem = new File(file);
 
         if(filem.exists() && !filem.isDirectory()) {//Update indi demektir.
-            //Burada indirilen jar çalýþtýrýlacak çalýþan jar durdurulacak ve indirilen jar ilk açýlýþta eski jarý silecek
+            //Burada indirilen jar ï¿½alï¿½ï¿½tï¿½rï¿½lacak ï¿½alï¿½ï¿½an jar durdurulacak ve indirilen jar ilk aï¿½ï¿½lï¿½ï¿½ta eski jarï¿½ silecek
             ZipFile zip = null;
             try {
                 zip = new ZipFile(filem);
@@ -73,7 +74,7 @@ public class update_control_and_install{
             File filem = new File("C:\\users\\" + System.getProperty("user.name") + "\\full_control\\full_control_v" + old_versiyon + ".exe");
             if (filem.exists() && !filem.isDirectory()) {//Update indi demektir.
                 filem.delete();
-            }//Eski versiyonu silme iþlemi
+            }//Eski versiyonu silme iï¿½lemi
             old_versiyon--;
         }
 

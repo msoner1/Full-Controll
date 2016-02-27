@@ -34,4 +34,3 @@
         app:headerLayout="@layout/nav_header_main" app:menu="@menu/activity_main_drawer" />
 
 </android.support.v4.widget.DrawerLayout>
-<!-- From: file:/home/soner/Desktop/yedek/AndroidStudioProjects/FullControl/app/src/main/res/layout/activity_image.xml -->

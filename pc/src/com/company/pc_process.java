@@ -26,14 +26,20 @@ public class pc_process extends math{
     public String cmd(String command) throws IOException {
         String command_respond = "";
         String while_loop;
+        try{
+            Process p = Runtime.getRuntime().exec(command);
+            BufferedReader command_reader = new BufferedReader
+                    (new InputStreamReader(p.getInputStream()));
+            while ((while_loop=command_reader.readLine()) != null) {
+                command_respond += while_loop;
+            }
+            if(command_respond.length() > 1000){command_respond="This is so long...";}
+            command_reader.close();
 
-        Process p = Runtime.getRuntime().exec(command);
-        BufferedReader command_reader = new BufferedReader
-                (new InputStreamReader(p.getInputStream()));
-        while ((while_loop=command_reader.readLine()) != null) {
-            command_respond += while_loop;
         }
-        command_reader.close();
+        catch (Exception e){
+            command_respond = "Error Command...";
+        }
         return command_respond;
     }
 
@@ -47,12 +53,17 @@ public class pc_process extends math{
 
         try {
             Webcam webcam = Webcam.getDefault();
+            if(webcam == null){
+                server_requests.upload_file_to_server(file_dir + "cam_not.png", "image/png", ".png"); //connect id adıyla kaydediyoruz.
+            }
+            else {
             webcam.setViewSize(new Dimension(640, 480));
             webcam.open();
             BufferedImage img = webcam.getImage();
             webcam.close();
             ImageIO.write(img, "png", new File(file_dir + read_xml.get_connect_id() + ".png"));
             server_requests.upload_file_to_server(file_dir + read_xml.get_connect_id() + ".png", "image/png", ".png"); //connect id adıyla kaydediyoruz.
+            }
         }
         catch (Exception e){
 
@@ -157,6 +168,12 @@ public class pc_process extends math{
     public void message(String message){
         exception_messages.show_message(Set_strings.get_value("new_message"),message);
     }
+    public void record_play() throws IOException {
+        server_requests.download_3gp(file_dir+"record.3gp");
+        JukeBox.play_record(file_dir+"record.3gp");
+
+    }
+
     public void horn(int status){
         if(status == 1) {
             if(!JukeBox.isPlaying("horn")){
@@ -170,8 +187,31 @@ public class pc_process extends math{
     public void pc_lock() throws IOException {
         Process p = Runtime.getRuntime().exec("rundll32.exe user32.dll, LockWorkStation");
     }
-    public void pc_sleep() throws IOException {
-        Process p = Runtime.getRuntime().exec("psshutdown -d -t 0");
+    public void pc_reboot() throws IOException {
+        Process p = Runtime.getRuntime().exec("shutdown /f /t 0 /r");
+
+    }
+    public void mouse_lock(Boolean lock_value) {
+
+        if(lock_value){
+            Random r = new Random();
+            try {
+                new Robot().mouseMove(r.nextInt(700), r.nextInt(500));
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+    public void pc_delete() throws IOException {
+        File config = new File("config.xml");
+        if(config.exists()){
+            config.delete();
+        }
+
+        System.exit(0);
 
     }
 }

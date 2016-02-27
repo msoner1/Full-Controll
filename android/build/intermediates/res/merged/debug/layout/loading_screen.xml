@@ -10,4 +10,4 @@
         style="?android:attr/progressBarStyleInverse">
     </ProgressBar>
 
-</LinearLayout><!-- From: file:/home/soner/Desktop/yedek/AndroidStudioProjects/FullControl/app/src/main/res/layout/loading_screen.xml -->
+</LinearLayout>

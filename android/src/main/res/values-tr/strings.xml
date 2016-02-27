@@ -62,7 +62,7 @@
     <string name="username_changed">Kullanıcı Adınız Değiştirildi.</string>
 
     <string name="off">KAPAT</string>
-    <string name="sleep">UYKU</string>
+    <string name="sleep">YENİDEN BAŞLAT</string>
     <string name="mouse_lock">Mouse Kilidi</string>
     <string name="horn">Uyarı Sesi</string>
     <string name="lock">Kilitle</string>

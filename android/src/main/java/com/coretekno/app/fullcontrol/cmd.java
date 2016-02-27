@@ -1,5 +1,6 @@
 package com.coretekno.app.fullcontrol;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -49,6 +51,8 @@ public class cmd extends AppCompatActivity implements NavigationView.OnNavigatio
    List<cmd_setting> messages = new ArrayList<>();
     cmd_adapter adapter;
 
+    Timer timer = new Timer();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +75,8 @@ public class cmd extends AppCompatActivity implements NavigationView.OnNavigatio
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-
         response_listener();
+
     }
 
     @Override
@@ -94,6 +98,9 @@ public class cmd extends AppCompatActivity implements NavigationView.OnNavigatio
             request.execute("cmd_post", text, "button_send");
             cmd_text.setText("");
             top_cmd.setText(R.string.waiting_respond);
+            View view = this.getCurrentFocus();
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             write_layout.setVisibility(View.GONE);
         }
         else {
@@ -110,6 +117,8 @@ public class cmd extends AppCompatActivity implements NavigationView.OnNavigatio
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
+        timer.cancel();
+        timer.purge();
 
         if (id == R.id.pc_values) {
             Intent intent = new Intent(this,MainActivity.class);
@@ -159,7 +168,6 @@ public class cmd extends AppCompatActivity implements NavigationView.OnNavigatio
     }
 
     public void response_listener() {
-        Timer timer = new Timer();
         TimerTask doAsynchronousTask = new TimerTask() {
             @Override
             public void run() {
@@ -167,7 +175,7 @@ public class cmd extends AppCompatActivity implements NavigationView.OnNavigatio
                 request.execute("get_cmd_response","1","response_listener");
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 500);
+        timer.schedule(doAsynchronousTask, 0, 3000);
     }
 
 
@@ -203,6 +211,7 @@ public class cmd extends AppCompatActivity implements NavigationView.OnNavigatio
 
         protected void onPostExecute(String[] response) {
             if(response[1].equals("1")){
+
                 if(response[0].equals("response_listener") && !response[2].equals("0")){
                     add_view(response[2],"Your System :");
                     top_cmd.setText("");
@@ -213,6 +222,7 @@ public class cmd extends AppCompatActivity implements NavigationView.OnNavigatio
                 if(!response[0].equals("response_listener")) {
                     Snackbar.make(cmd_text, R.string.already_closed, Snackbar.LENGTH_LONG)
                             .show();
+                    top_cmd.setText( R.string.already_closed);
                 }
             }
         }

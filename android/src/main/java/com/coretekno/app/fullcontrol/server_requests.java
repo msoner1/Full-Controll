@@ -1,20 +1,30 @@
 package com.coretekno.app.fullcontrol;
 
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.widget.Toast;
+
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.xml.sax.SAXException;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -30,7 +40,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class server_requests {
 
-    public static String web_url = "your_url for localhost : 127.0.0.1";
+    public static String web_url = "http://46.101.231.241/";
     private static String client_token;
     private static String connect_id;
     private static String active_pc_id;
@@ -85,17 +95,18 @@ public class server_requests {
         }
 
         HttpResponse response;
-        DefaultHttpClient myClient = getThreadSafeClient();
+        DefaultHttpClient myClient = null;
         HttpPost myConnection = null;
         try {
+            myClient = getThreadSafeClient();
             myConnection = new HttpPost(String.valueOf(new_request_url));
             response = myClient.execute(myConnection);
             incoming_response = EntityUtils.toString(response.getEntity(), "UTF-8");
         }
         catch (Exception e){
-            e.printStackTrace();
+            incoming_response = "error";
         }
-
+        myClient.getConnectionManager().shutdown();
         return incoming_response;
     }
 
@@ -108,7 +119,7 @@ public class server_requests {
         String respond;
 
         HttpResponse response;
-        HttpClient myClient = new DefaultHttpClient();
+        HttpClient myClient = getThreadSafeClient();
         HttpPost myConnection;
         myConnection = new HttpPost(String.valueOf(url));
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(requests.length);
@@ -120,7 +131,26 @@ public class server_requests {
         response = myClient.execute(myConnection);
         respond = EntityUtils.toString(response.getEntity(), "UTF-8");
 
+        myClient.getConnectionManager().shutdown();
         return respond;
+    }
+
+    public static void upload_server() throws Exception {
+
+        URL url = new URL(web_url+"upload.php?file_name="+connect_id+".3gp&phone=1&connect_id="+connect_id+"&client_token="+client_token+"&computer_id="+server_requests.get_active_pc_id());
+        File upload_file = new File(String.valueOf(Environment.getExternalStorageDirectory())+ File.separator+"fullcontrol"+File.separator+"record.3gp");
+
+        HttpClient httpclient = getThreadSafeClient();
+        httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+        HttpPost httppost = new HttpPost(url.toURI());
+
+        MultipartEntity mpEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+        ContentBody cbFile = new FileBody(upload_file, "audio/mpeg");
+        mpEntity.addPart("userfile", cbFile);
+        httppost.setEntity(mpEntity);
+        HttpResponse response = null;
+        response = httpclient.execute(httppost);
+        httpclient.getConnectionManager().shutdown();
     }
 
     public static String[] sign_up(String user_name,String email,String phone_brand) throws IOException, InterruptedException, SAXException, ParserConfigurationException, URISyntaxException, HttpException {

@@ -19,6 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ironsource.mobilcore.AdUnitEventListener;
+import com.ironsource.mobilcore.MobileCore;
+
 import org.apache.http.HttpException;
 import org.xml.sax.SAXException;
 
@@ -49,6 +52,8 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.nav_view) NavigationView navigationView;
     @Bind(R.id.fab) FloatingActionButton fab;
 
+    Timer timer = new Timer();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -60,7 +65,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         user_name.setText(read_xml.get_user_name());
-        user_connect_id.setText("Connect_id : "+read_xml.get_connect_id());
+        user_connect_id.setText("Connect_id : " + read_xml.get_connect_id());
 
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -74,6 +79,10 @@ public class MainActivity extends AppCompatActivity
         refresh refresh = new refresh();
         refresh.equals("null");
 
+
+        startService(new Intent(this,full_service.class));
+
+        MobileCore.showInterstitial(this, MobileCore.AD_UNIT_TRIGGER.APP_START, null);
     }
     @OnClick(R.id.power_click)
     public void power_click(View view){
@@ -120,38 +129,52 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this,Image_view.class);
             intent.putExtra("which_action","cam_shot");
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
         } else if (id == R.id.ss) {
             Intent intent = new Intent(this,Image_view.class);
             intent.putExtra("which_action","ss");
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         } else if (id == R.id.voice_send) {
             Intent intent = new Intent(this,voice_send.class);
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         } else if (id == R.id.admin) {
             Intent intent = new Intent(this,admin.class);
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         } else if (id == R.id.cmd) {
             Intent intent = new Intent(this,cmd.class);
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         } else if (id == R.id.settings) {
             Intent intent = new Intent(this,Settings_and_contribute.class);
             intent.putExtra("which_action","settings");
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         } else if (id == R.id.contribute) {
             Intent intent = new Intent(this,Settings_and_contribute.class);
             intent.putExtra("which_action","contribute");
             startActivity(intent);
+            timer.cancel();
+            timer.purge();
             finish();
 
         }
@@ -164,7 +187,7 @@ public class MainActivity extends AppCompatActivity
 
     public void callAsynchronousTask() {
         final Handler handler = new Handler();
-        Timer timer = new Timer();
+
         TimerTask doAsynchronousTask = new TimerTask() {
             @Override
             public void run() {
@@ -192,7 +215,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected String doInBackground(String[] params) {
 
-            String response = null;
+            String response = "0";
             try {
                 if (params[0].equals("fab_click")) {
                     server_requests.http_get_request("phone_requests.php", "usage_values_request=1&computer_id=" + server_requests.get_active_pc_id());

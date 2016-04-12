@@ -6,7 +6,7 @@
   <a target="_blank" href="https://travis-ci.org/msoner1/Full-Controll"><img src="https://travis-ci.org/msoner1/Full-Controll.svg?branch=master"></a>
 </p>
 
-<p align="center">You can control your computer from your android phone with this application.<a href="http://www.app.coretekno.com/full_control">For More Information</a>
+<p align="center">You can control your computer from your android phone with this application.
 
 
 <img src="https://raw.githubusercontent.com/msoner1/Full-Controll/master/ss.png" width="250" />
